@@ -1,0 +1,28 @@
+
+#CourseInfoDiv{
+
+    position: absolute;
+    top:25%;
+    margin-top:-50px;
+    text-align:center;
+    width:100%;
+    
+}
+
+#CourseInfo{
+
+    margin:auto;
+    left:0;
+    right:0;
+    text-align:center;
+    border-collapse:collapse;
+    
+}
+
+.CourseInfoTable{
+
+    border: 1px;
+    border-color: #FF603E;
+    border-style: solid;
+    
+}

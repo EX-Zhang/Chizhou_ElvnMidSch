@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <meta charset = "utf-8" />
+
+    <title>{{Course.Name|safe}}评价系统</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/static/css/Comment.css">
+
+    <script type="text/javascript" src="/static/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/Comment.js"></script>
+
+    
+  </head>
+
+  <body>
+
+    <div id="CommentDiv">
+
+      <h2>{{Course.Date|safe}}{{Course.Name|safe}}学生评价表</h2>
+
+      <br>
+
+      <table id="CommentTable">
+
+        <tr id="CommentTableHeader" class="TableRow" bgcolor="#FEB6A6">
+          <th class="NameCol"><B>名单</B></th>
+          <th class="TableCol"></th>
+          <th class="TimeCol"></th>
+          <th class="TimeCol"></th>
+          <th class="CommentCol"><B>评价</B></th>
+        </tr>
+
+        {% for Student in Students %}
+
+        <tr id="{{Student.ID|safe}}" class="TableRow" bgcolor="#AFAFAF">
+          <td class="NameCol" onclick="init_Attend_Modal({{Course.ID|safe}},{{Student.ID|safe}},'{{Student.Name|safe}}')">{{Student.Name|safe}}</td>
+          <td class="TableCol" onclick="init_Comment_Modal({{Course.ID|safe}},{{Student.ID|safe}},'{{Student.Name|safe}}')">✔</td>
+          <td class="TimeCol"><button type="button" id="Absent" class="btn btn-default btn-xs" disabled="disabled"></button></td>
+          <td class="TimeCol"><button type="button" id="Attend" class="btn btn-default btn-xs" disabled="disabled"></button></td>
+          <td id="Comment" class="CommentCell CommentCol"></td>
+        </tr>
+
+        <script>
+
+         set_comment({{Student.ID|safe}},"{{Student.Name|safe}}","{{Student.Comment|safe}}");
+
+         init_Time_Info({{Student.ID|safe}},"{{Student.Absent|safe}}","{{Student.Attend|safe}}");
+         
+        </script>
+        
+        {% endfor %}
+        
+        </table>
+
+      
+    </div>
+
+    <div class="modal fade" id="AttendInfoModal" tabindex="-1" role="dialog" aria-labelledby="AttendInfoModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="AttendInfoModalLabel">
+				</h4>
+                                <button type="button" class="btn btn-default btn-lg" onclick="$('#AttendInfoModal').modal('hide')">
+					&times;
+				</button>
+			</div>
+			<div id="AttendInfoModalBody" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="$('#AttendInfoModal').modal('hide')">关闭
+				</button>
+			</div>
+		</div>
+	</div>
+    </div>
+
+    <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="CommentModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="CommentModalLabel">
+				</h4>
+                                <button type="button" class="btn btn-default btn-lg" onclick="$('#CommentModal').modal('hide')">
+					&times;
+				</button>
+			</div>
+			<div id="CommentModalBody" class="modal-body" style="text-align:center;">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="$('#CommentModal').modal('hide')">关闭
+				</button>
+                                <button type="button" id="SubmitComment" class="btn btn-primary">提交更改
+				</button>
+			</div>
+		</div>
+	</div>
+    </div>
+
+    
+  </body>
+  
+</html>

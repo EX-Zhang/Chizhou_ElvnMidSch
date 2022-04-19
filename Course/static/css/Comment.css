@@ -1,0 +1,68 @@
+
+#CommentDiv{
+
+    position: absolute;
+    top:20%;
+    margin-top:-50px;
+    width: 100%;
+    text-align: center;
+    
+}
+
+
+#CommentTable{
+
+    margin: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+    overflow-y: scroll;
+    height: 300px;
+    
+}
+
+#CommentTableHeader{
+
+    color: #FFFFFF;
+    border: 1px solid black;
+    
+}
+
+.TableRow{
+
+    height: 50px;
+    
+}
+
+.NameCol{
+
+    width: 100px;
+    
+}
+
+.TableCol{
+
+    width: 5px;
+    
+}
+
+.TimeCol{
+
+    width: 110px;
+
+}
+
+.CommentCol{
+
+    width: 200px;
+    
+}
+
+.CommentCell{
+
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    
+}
