@@ -1,120 +1,73 @@
 
-function init_Time_Info(Student_ID, Absent_Time, Attend_Time) {
+function init_Time_Info(Student_ID, Absent, Time) {
 
-    set_Time_Info(Student_ID, "Absent", Absent_Time);
-
-    set_Time_Info(Student_ID, "Attend", Attend_Time);
+    set_Time_Info(Student_ID, Absent == "1" && Time == "None" ? 1 : 0, Time);
 
 }
 
-function set_Time_Info(Student_ID, Time_Type, Time) {
+function set_Time_Info(Student_ID, Absent, Time) {
 
-    if (Time == null || Time == "" || Time == "None") {
+    if (Time == null) {
         return;
     }
 
-    var btn = $("#" + Student_ID).find("#" + Time_Type);
+    var btn = $("#" + Student_ID).find("#Absent");
 
     if (btn == null) {
         return;
     }
 
-    if (Time_Type == "Absent") {
+    if (Absent == 1) {
 
-        btn.text(Time.substring(0, 5) + "未到");
+        btn.text("缺席");
 
         btn.attr('class', 'btn btn-warning btn-xs');
 
         btn.attr('style', 'color: white');
 
+        btn.removeAttr('disabled');
+
+        $("#" + Student_ID).find("#Name").removeAttr("onclick");
+
     }
-    else if (Time_Type == "Attend") {
+    else if (Time != "" && Time != "None") {
 
         btn.text(Time.substring(0, 5) + "已到");
 
         btn.attr('class', 'btn btn-success btn-xs');
 
+        btn.attr('disabled', 'disabled');
+
+        $("#" + Student_ID).find("#Name").removeAttr("onclick");
+
     }
 
 }
 
-function init_Attend_Modal(Course_ID, Student_ID, Student_Name) {
+function set_Absent(Course_ID, Student_ID) {
 
-    $("#AttendInfoModal").modal({ backdrop: 'static' });
+    $.post('/courses/comment/setTime', { Student_ID: Student_ID, Course_ID: Course_ID, Date: new Date().toLocaleDateString() }, function (result) {
 
-    $("#AttendInfoModalLabel").text("学生" + Student_Name + "（学号：" + Student_ID + "）出勤");
+        if (result.response == "Valid") {
 
-    var time_html = "<div style='text-align:center;'><input type='time' id='Absent_Time'><button type='button' style='text-align:center;' id='Absent_btn' class='btn btn-warning btn-sm'>设置未到时间</button></div>";
+            set_Time_Info(Student_ID, 1, "00:00");
 
-    time_html += "<br><div style='text-align:center;'><input type='time' id='Attend_Time'><button type='button' style='text-align:center;' id='Attend_btn' class='btn btn-success btn-sm'>设置已到时间</button></div>";
+        }
 
-    var cur_time = new Date().toLocaleTimeString().substring(0, 5);
-
-    var Absent_Time = $("#" + Student_ID).find("#Absent").text().substring(0, 5);
-
-    var Attend_Time = $("#" + Student_ID).find("#Attend").text().substring(0, 5);
-
-    $("#AttendInfoModalBody").html(time_html);
-
-    $("#Absent_Time").val(Absent_Time == null || Absent_Time == "" || Absent_Time == "None" ? cur_time : Absent_Time);
-
-    $("#Attend_Time").val(Attend_Time == null || Attend_Time == "" || Attend_Time == "None" ? cur_time : Attend_Time);
-
-    $("#Absent_btn").attr("onclick", "set_Absent_Time(" + Course_ID + "," + Student_ID + ",'" + Student_Name + "')");
-
-    $("#Attend_btn").attr("onclick", "set_Attend_Time(" + Course_ID + "," + Student_ID + ",'" + Student_Name + "')");
-
-    $('#AttendInfoModal').modal('show');
+    });
 
 }
 
-function set_Absent_Time(Course_ID, Student_ID, Student_Name) {
+function set_Attend(Course_ID, Student_ID) {
 
-    var Time = $("#Absent_Time").val();
-
-    if (Time == null || Time == "" || Time == "None") {
-
-        alert("请设置未到时间");
-        return;
-
-    }
-
-    if (!confirm("确认设置" + Student_Name + "（学号：" + Student_ID + "）" + Time + "未到？")) {
-        return;
-    }
-
-    set_Time(Course_ID, Student_ID, "Absent", Time);
-
-}
-
-function set_Attend_Time(Course_ID, Student_ID, Student_Name) {
-
-    var Time = $("#Attend_Time").val();
-
-    if (Time == null || Time == "" || Time == "None") {
-
-        alert("请设置已到时间");
-        return;
-
-    }
-
-    if (!confirm("确认设置" + Student_Name + "（学号：" + Student_ID + "）" + Time + "已到？")) {
-        return;
-    }
-
-    set_Time(Course_ID, Student_ID, "Attend", Time);
-
-}
-
-function set_Time(Course_ID, Student_ID, Time_Type, Time) {
+    var Time = new Date().toLocaleTimeString().substring(0, 5);
 
     var time_info = {
 
         Course_ID: Course_ID,
         Student_ID: Student_ID,
         Date: new Date().toLocaleDateString(),
-        Time: Time,
-        Type: Time_Type
+        Time: Time
 
     };
 
@@ -127,9 +80,7 @@ function set_Time(Course_ID, Student_ID, Time_Type, Time) {
 
         }
 
-        alert("设置成功");
-
-        set_Time_Info(Student_ID, Time_Type, Time);
+        set_Time_Info(Student_ID, 0, Time);
 
     });
 
@@ -194,8 +145,6 @@ function submit_comment(Course_ID, Student_ID, Student_Name) {
             return;
 
         }
-
-        alert("提交成功");
 
         set_comment(Student_ID, Student_Name, Comment);
 

@@ -36,17 +36,15 @@
           <th class="NameCol"><B>名单</B></th>
           <th class="TableCol"></th>
           <th class="TimeCol"></th>
-          <th class="TimeCol"></th>
           <th class="CommentCol"><B>评价</B></th>
         </tr>
 
         {% for Student in Students %}
 
         <tr id="{{Student.ID|safe}}" class="TableRow" bgcolor="#AFAFAF">
-          <td class="NameCol" onclick="init_Attend_Modal({{Course.ID|safe}},{{Student.ID|safe}},'{{Student.Name|safe}}')">{{Student.Name|safe}}</td>
+          <td id="Name" class="NameCol" onclick="set_Absent({{Course.ID|safe}},{{Student.ID|safe}})">{{Student.Name|safe}}</td>
           <td class="TableCol" onclick="init_Comment_Modal({{Course.ID|safe}},{{Student.ID|safe}},'{{Student.Name|safe}}')">✔</td>
-          <td class="TimeCol"><button type="button" id="Absent" class="btn btn-default btn-xs" disabled="disabled"></button></td>
-          <td class="TimeCol"><button type="button" id="Attend" class="btn btn-default btn-xs" disabled="disabled"></button></td>
+          <td class="TimeCol"><button type="button" id="Absent" class="btn btn-default btn-xs" onclick="set_Attend({{Course.ID|safe}},{{Student.ID|safe}})" disabled="disabled"></button></td>
           <td id="Comment" class="CommentCell CommentCol"></td>
         </tr>
 

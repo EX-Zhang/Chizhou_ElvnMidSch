@@ -21,40 +21,31 @@ def setTime(request):
 
             Date = parseDate(post.get('Date',0))
 
-            Time = post.get('Time',0)
-
-            Type = post.get('Type',0)
+            Time = post.get('Time')
 
             comments = Comment.objects.filter(course_id = Course_ID, student_id = Student_ID, course_date = Date)
 
             if len(comments) == 0:
 
-                if Type == "Absent":
+                if(Time == None):
 
-                    Comment.objects.create(course_id = Course_ID, student_id = Student_ID, course_date = Date, absent = Time)
-
-                elif Type == "Attend":
-
-                    Comment.objects.create(course_id = Course_ID, student_id = Student_ID, course_date = Date, attend = Time)
+                    Comment.objects.create(course_id = Course_ID, student_id = Student_ID, course_date = Date, absent = 1)
 
                 else:
 
-                    return JsonResponse({'response':'发生未知错误'})
-
+                    Comment.objects.create(course_id = Course_ID, student_id = Student_ID, course_date = Date, absent = 1, attend = Time)
+                
             else:
 
-                if Type == "Absent":
+                if Time == None:
 
-                    comments.update(absent = Time)
+                    comments.update(absent = 1)
 
-                elif Type == "Attend":
+                else:
 
                     comments.update(attend = Time)
 
-                else:
 
-                    return JsonResponse({'response':'发生未知错误'})
-            
             return JsonResponse({'response': 'Valid'})
 
     return JsonResponse({'response':'发生未知错误'})

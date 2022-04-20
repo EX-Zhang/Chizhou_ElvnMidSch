@@ -22,7 +22,7 @@ class Comment(models.Model):
     course_id = models.IntegerField(db_column='Course_ID', primary_key=True)  # Field name made lowercase.
     student_id = models.IntegerField(db_column='Student_ID')  # Field name made lowercase.
     course_date = models.DateField(db_column='Course_Date')  # Field name made lowercase.
-    absent = models.TimeField(db_column='Absent', blank=True, null=True)  # Field name made lowercase.
+    absent = models.IntegerField(db_column='Absent', blank=True, null=True)  # Field name made lowercase.
     attend = models.TimeField(db_column='Attend', blank=True, null=True)  # Field name made lowercase.
     comment = models.TextField(db_column='Comment', blank=True, null=True)  # Field name made lowercase.
     parent_available = models.IntegerField(db_column='Parent_Available', blank=True, null=True)  # Field name made lowercase.

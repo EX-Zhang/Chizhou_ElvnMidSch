@@ -12,11 +12,44 @@ from Course.models import *
 
 from Course.selection import *
 
+from json import dumps
+
 # Create your views here.
 
 def SelectionIndex(request):
 
-    return HttpResponse("Course Selection")
+    if request.method == "POST":
+
+        post = request.POST
+
+        if post:
+
+            Action_Type = post.get('Action_Type',0)
+
+            Student_ID = post.get("Student_ID",0)
+
+            Course_ID = post.get('Course_ID',0)
+
+            if Action_Type == 'Apply':
+
+                return apply_for_course(Course_ID,Student_ID)
+
+            elif Action_Type == 'Cancel':
+
+                return cancel_course(Course_ID,Student_ID)
+
+            else:
+
+                return JsonResponse({"response": "未知错误发生"})
+
+    Student_ID = -1
+
+    if request.method == "GET":
+
+        Student_ID = int(request.GET.get('id',default='-1'))
+
+    return render(request,'Selection/Selection.html',{"Courses": dumps(get_courses(Student_ID)), "Student_ID": Student_ID})
+    
 
 @csrf_exempt
 def Selection(request,Course_ID):

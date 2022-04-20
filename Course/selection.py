@@ -7,32 +7,34 @@ from Course.models import *
 
 def get_courses(Student_ID):
 
-    Courses_Array = []
+    Course_Dict = {}
 
-    courses = Course.objects.filter(available_date <= date.today())
+    courses = Course.objects.filter(available_date__gte = date.today())
 
     Applied_Course = -1
 
     for course in courses:
 
-        Applied_Course = get_course_info(course, Student_ID, Courses_Array)
+        Applied_Course = get_course_info(course, Student_ID, Course_Dict)
 
     if Applied_Course != -1:
 
-        for cur in Courses_Array:
+        for ID in Course_Dict:
 
-            if cur['Course']['ID'] != Applied_Course:
+            cur = Course_Dict[ID]
+
+            if cur['ID'] != Applied_Course:
 
                 cur['Valid'] = 2
 
-    return {'Courses': Courses_Array, 'Student_ID': Student_ID}
+    print(Course_Dict)
+
+    return Course_Dict
 
 
-def get_course_info(Course_Info, Student_ID, Courses_Array):
+def get_course_info(Course_Info, Student_ID, Course_Dict):
 
     ID = Course_Info.course_id
-
-    Name = Course_Info.course_name
 
     Valid = 2
 
@@ -40,27 +42,25 @@ def get_course_info(Course_Info, Student_ID, Courses_Array):
 
         Valid = len(Application.objects.filter(student_id = Student_ID, course_id = ID))
 
-    Courses_Array.append({
+    Course_Dict[ID] = {
 
-        'Course': {
-
-            'ID': ID,
+        'ID': ID,
             
-            'Name': Name,
+        'Name': Course_Info.course_name,
             
-            'Info': Course_Info.course_info,
+        'Info': Course_Info.course_info,
 
-            'Place': Course_Info.course_place,
+        'Teacher': Course_Info.teacher_id,
 
-            'Total': Course_Info.total_num,
+        'Place': Course_Info.course_place,
 
-            'Current': len(Application.objects.filter(course_id = ID)),
-            
-        },
+        'Total': Course_Info.total_num,
+
+        'Current': len(Application.objects.filter(course_id = ID)),
 
         'Valid': Valid,
 
-    })
+    }
 
     if Valid == 1:
 

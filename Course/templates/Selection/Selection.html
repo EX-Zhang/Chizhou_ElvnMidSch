@@ -27,55 +27,39 @@
 
       <table id="CourseInfo" class="CourseInfoTable">
 
-        <tr>
-          <td class="CourseInfoTable"><B>课程名称</B></td>
-          <td class="CourseInfoTable"><B>{{Course.Name|safe}}</B></td>
+        <tr class="CourseInfoRow">
+          <td class="CourseInfoTable CourseInfoTitle"><B>课程名称</B></td>
+          <td class="CourseInfoTable CourseInfoContent"><B><select id="CourseNameDroplist" onchange="Name_Droplist_Change({{Courses|safe}})"></select></B></td>
         </tr>
 
-        <tr>
-          <td class="CourseInfoTable" bgcolor="#FEB6A6">课程简介</td>
-          <td class="CourseInfoTable" bgcolor="#FEB6A6"><button id="CourseInfoModalBtn" onclick="$('#CourseInfoModal').modal('show')" type="button">详细</button></td>
+        <tr class="CourseInfoRow">
+          <td class="CourseInfoTable CourseInfoTitle" bgcolor="#FEB6A6">课程简介</td>
+          <td class="CourseInfoTable CourseInfoContent" bgcolor="#FEB6A6"><button id="CourseInfoModalBtn" onclick="$('#CourseInfoModal').modal('show')" type="button">详细</button></td>
         </tr>
 
-        <tr>
-          <td class="CourseInfoTable">授课老师</td>
-          <td class="CourseInfoTable">{{Course.Teacher|safe}}</td>
+        <tr class="CourseInfoRow">
+          <td class="CourseInfoTable CourseInfoTitle">授课老师</td>
+          <td class="CourseInfoTable CourseInfoContent" id="CourseTeacher"></td>
         </tr>
 
-        <tr>
-          <td class="CourseInfoTable" bgcolor="#FEB6A6">授课地点</td>
-          <td class="CourseInfoTable" bgcolor="#FEB6A6">{{Course.Place|safe}}</td>
+        <tr class="CourseInfoRow">
+          <td class="CourseInfoTable CourseInfoTitle" bgcolor="#FEB6A6">授课地点</td>
+          <td class="CourseInfoTable CourseInfoContent" bgcolor="#FEB6A6" id="CoursePlace"></td>
         </tr>
 
-        <tr>
-          <td class="CourseInfoTable">班级人数</td>
-          <td class="CourseInfoTable">{{Course.Total|safe}}</td>
+        <tr class="CourseInfoRow">
+          <td class="CourseInfoTable CourseInfoTitle">班级人数</td>
+          <td class="CourseInfoTable CourseInfoContent" id="CourseTotal"></td>
         </tr>
 
-        <tr>
-          <td class="CourseInfoTable" bgcolor="#FEB6A6">已经报名人数</td>
-          <td class="CourseInfoTable" bgcolor="#FEB6A6">{{Course.Current|safe}}</td>
+        <tr class="CourseInfoRow">
+          <td class="CourseInfoTable CourseInfoTitle" bgcolor="#FEB6A6">已经报名人数</td>
+          <td class="CourseInfoTable CourseInfoContent" bgcolor="#FEB6A6" id="CourseCurrent"></td>
         </tr>
 
-                
       </table>
 
-      <div style="margin:auto" class="text-center">
-
-        {% if Valid == 0 %}
-
-          <br>
-          <button class="btn btn-primary" onclick="Course_Action_btn('Apply')" style="background-color:#FA603F">点击报名</button>
-
-        {% elif Valid == 1 %}
-
-          <br>
-
-          <button class="btn btn-primary" onclick="Course_Action_btn('Cancel')" style="background-color:#898786">确认取消</button>
-
-        {% endif %}
-
-      </div>
+      <div style="margin:auto" class="text-center" id="CourseActionDIV"></div>
       
     </div>
 
@@ -84,14 +68,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="CourseInfoModalLabel">
-					{{Course.Name|safe}}简介
 				</h4>
                                 <button type="button" class="btn btn-default btn-lg" onclick="$('#CourseInfoModal').modal('hide')">
 					&times;
 				</button>
 			</div>
-			<div class="modal-body">
-				{{Course.Info|safe}}
+			<div class="modal-body" id="CourseInfoModalBody">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" style="border: 1px black solid;" onclick="$('#CourseInfoModal').modal('hide')">关闭
@@ -103,12 +85,13 @@
 
     <script>
 
-     
-     function Course_Action_btn(Action_Type){
+     function Course_Action_btn(Course_ID, Action_Type){
 
-         Course_Action({{Course.ID|safe}},{{Student_ID|safe}},Action_Type);
+         Course_Action(Course_ID, {{Student_ID|safe}}, Action_Type);
          
      }
+
+     init_Selection_Index({{Courses|safe}});
      
     </script>
     
