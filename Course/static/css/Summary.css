@@ -1,0 +1,47 @@
+
+#SummaryDiv{
+
+    position: absolute;
+    top:20%;
+    margin-top:-50px;
+    width: 100%;
+    text-align: center;
+
+}
+
+#SummaryTable{
+
+    margin: auto;
+    text-align: center;
+    
+}
+
+.NameCol{
+
+    width: 100px;
+    
+}
+
+.AttendCol{
+
+    width: 100px;
+
+}
+
+.CommentCol{
+
+    width: 200px;
+    
+}
+
+.SummaryRow{
+
+    height: 35px;
+    
+}
+
+.CommentAction{
+
+    border: black solid 1px;
+    
+}

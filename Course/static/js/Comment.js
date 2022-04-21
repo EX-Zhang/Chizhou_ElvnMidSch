@@ -123,10 +123,6 @@ function submit_comment(Course_ID, Student_ID, Student_Name) {
 
     var Comment = $("#" + Student_ID + "textarea").val();
 
-    if (!confirm("确认评价" + Student_Name + "（学号：" + Student_ID + "）？")) {
-        return;
-    }
-
     var Comment_Info = {
 
         Course_ID: Course_ID,
@@ -147,6 +143,8 @@ function submit_comment(Course_ID, Student_ID, Student_Name) {
         }
 
         set_comment(Student_ID, Student_Name, Comment);
+
+        $('#CommentModal').modal('hide');
 
     });
 

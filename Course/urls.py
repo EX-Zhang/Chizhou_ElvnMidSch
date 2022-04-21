@@ -20,7 +20,12 @@ from . import views, comment
 urlpatterns = [
     path('selection/', views.SelectionIndex, name='SelectionIndex'),
     path('selection/<int:Course_ID>', views.Selection, name='Selection'),
+    
     path('comment/<int:Course_ID>',views.CommentIndex,name='CommentIndex'),
     path('comment/setTime',comment.setTime,name='setTime'),
     path('comment/setComment',comment.setComment,name='setComment'),
+
+    path('summary/<int:Course_ID>', views.CommentSummary, name='CommentSummary'),
+    path('summary/getComment', comment.getComment, name='getComment'),
+    path('summary/getNewComments', comment.getNewComments, name='getNewComments'),
 ]

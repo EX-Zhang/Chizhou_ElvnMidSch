@@ -12,6 +12,8 @@ from Course.models import *
 
 from Course.selection import *
 
+from Course.comment import *
+
 from json import dumps
 
 # Create your views here.
@@ -192,3 +194,9 @@ def CommentIndex(request, Course_ID):
         return HttpResponse("课程ID不存在")
 
     return HttpResponse("未知错误发生")
+
+def CommentSummary(request, Course_ID):
+
+    courses = Course.objects.filter(course_id = Course_ID)
+
+    return render(request, 'Comment/Summary.html', {'Course':{'ID': Course_ID, 'Name': courses[0].course_name}, 'Comments': dumps(getComments(Course_ID, "", date.today()))})
