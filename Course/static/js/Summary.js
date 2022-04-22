@@ -19,13 +19,11 @@ function set_Summary_table(Comments, Course_ID) {
 
     if (Comments.Dates.length >= 3) {
 
-        table.append("<tr id='btnRow'></tr>");
+        var div = $("#btnDiv");
 
-        var row = $("#btnRow");
+        div.append("<button type='button' id='Prev_btn' class='btn btn-default btn-xs CommentAction' style='float:left;'>上一日</button>");
 
-        row.append("<button type='button' id='Prev_btn' class='btn btn-default btn-xs CommentAction'>上一日</button>");
-
-        row.append("<button type='button' id='Next_btn' class='btn btn-default btn-xs CommentAction'>下一日</button>");
+        div.append("<button type='button' id='Next_btn' class='btn btn-default btn-xs CommentAction' style='float:right;'>下一日</button>");
 
         var prev_html = "set_New_Comments(" + Course_ID + ",'Prev')";
 

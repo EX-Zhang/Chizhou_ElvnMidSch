@@ -25,7 +25,11 @@
 
     <div id="SummaryDiv">
 
-      <table id="SummaryTable" style="border:1px;border-color:#FF603E;border-style:solid;">
+      <h2>{{Course.Name|safe}}汇总表</h2><br>
+
+      <div style="width:fit-content;margin:auto;">
+
+      <table id="SummaryTable">
 
         <tr id="Date" style="color:white;" class="SummaryRow" bgcolor="FC522D">
           <th></th>
@@ -36,7 +40,13 @@
         </tr>
         
       </table>
-      
+
+      <div id="btnDiv">
+        <br>
+      </div>
+
+      </div>
+
     </div>
 
     <script>

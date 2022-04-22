@@ -2,8 +2,6 @@ from django.http import JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from django.db.models import Count
-
 from datetime import date, timedelta
 
 from Course.models import *
@@ -19,11 +17,49 @@ def setTime(request):
 
             Course_ID = post.get('Course_ID',0)
 
-            Student_ID = post.get('Student_ID',0)
+            Students = post.get('Students')
 
             year, mon, day = post.get('Date',0).split('/')
 
             Date = date(int(year), int(mon), int(day))
+
+            if(Students != None):
+
+                Students = Students[1 : len(Students) - 1]
+
+                if len(Students) == 0:
+
+                    return JsonResponse({'response':'发生未知错误'})
+
+                StudentID = []
+
+                for Student in Students.split(','):
+
+                    cur_student = int(Student)
+
+                    comments = Comment.objects.filter(course_id = Course_ID, student_id = cur_student, course_date = Date)
+
+                    if len(comments) == 0:
+
+                        Comment.objects.create(course_id = Course_ID, student_id = cur_student, course_date = Date, absent = 0)
+
+                        StudentID.append(cur_student)
+
+                    elif comments[0].absent != 1:
+
+                        comments.update(absent = 0)
+
+                        StudentID.append(cur_student)
+
+                
+                return JsonResponse({'response':'Valid', 'Students': StudentID})
+            
+
+            Student_ID = post.get('Student_ID')
+
+            if Student_ID == None:
+
+                return JsonResponse({'response':'发生未知错误'})
 
             Time = post.get('Time')
 
@@ -97,7 +133,7 @@ def getComments(Course_ID, Direct, date):
 
     if Direct == "Prev":
 
-        comments = Comment.objects.filter(course_id = Course_ID, course_date__lt = date).order_by('course_date')
+        comments = Comment.objects.filter(course_id = Course_ID, course_date__lt = date).order_by('-course_date')
 
         for comment in comments:
 
@@ -113,7 +149,7 @@ def getComments(Course_ID, Direct, date):
 
     elif Direct == "Next":
 
-        comments = Comment.objects.filter(course_id = Course_ID, course_date__gt = date).order_by('-course_date')
+        comments = Comment.objects.filter(course_id = Course_ID, course_date__gt = date).order_by('course_date')
 
         for comment in comments:
 
@@ -129,7 +165,7 @@ def getComments(Course_ID, Direct, date):
 
     else:
 
-        comments = Comment.objects.filter(course_id = Course_ID, course_date__lte = date).order_by('course_date')
+        comments = Comment.objects.filter(course_id = Course_ID, course_date__lte = date).order_by('-course_date')
 
         for comment in comments:
 
@@ -145,7 +181,7 @@ def getComments(Course_ID, Direct, date):
 
     Dates = []
 
-    for date in commentDates:
+    for date in commentDates[::-1]:
 
         Dates.append(date.strftime("%Y-%m-%d"))
 
@@ -163,7 +199,7 @@ def getComments(Course_ID, Direct, date):
             
         }
 
-        for date in commentDates:
+        for date in commentDates[::-1]:
 
             comment = comments.filter(student_id = student_id, course_date = date)
         
@@ -248,3 +284,58 @@ def getNewComments(request):
 
     return JsonResponse({'response': 'inValid'})
 
+def getCurrentTerm():
+
+    today = date.today()
+
+    year = int(today.strftime("%Y"))
+
+    mon = int(today.strftime("%m"))
+
+    if mon >= 2 and mon <= 7:
+
+        return [date(year,2,1), date(year,6,30)]
+
+    return [date(year-1,9,1), date(year,1,31)]
+
+def getRecentAttendNum(Course_ID, Student_Num):
+
+    comments = Comment.objects.filter(course_id = Course_ID, course_date__lte = date.today()).order_by('-course_date')
+
+    Dates = []
+
+    for comment in comments:
+
+        Date = comment.course_date
+
+        if Date not in Dates:
+
+            Dates.append(Date)
+
+        if len(Dates) == 4:
+
+            break
+
+    Attend_Num = []
+
+    for Date in Dates:
+
+        num = 0
+
+        for comment in comments.filter(course_date = Date):
+
+            if comment.absent == 1 and comment.attend == None:
+
+                num += 1
+
+        Attend_Num.append(Date.strftime("%m") + "月" + Date.strftime("%d") + "日：" + str(Student_Num - num) + " ")
+
+    while len(Attend_Num) < 4:
+
+        Attend_Num.append('')
+
+    return Attend_Num[::-1]
+
+def date_to_str(Date):
+
+    return Date.strftime("%Y") + '年' + Date.strftime("%m") + "月"

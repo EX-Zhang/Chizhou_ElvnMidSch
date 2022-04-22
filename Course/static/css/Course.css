@@ -1,5 +1,5 @@
 
-#SummaryDiv{
+#CourseSummaryDiv{
 
     position: absolute;
     top:20%;
@@ -9,7 +9,7 @@
 
 }
 
-#SummaryTable{
+#CourseSummaryTable{
 
     margin: auto;
     text-align: center;
@@ -19,32 +19,33 @@
     
 }
 
-.NameCol{
+.CourseRow:nth-child(even){
 
-    width: 100px;
+    background-color: #FEB6A6;
     
 }
 
-.AttendCol{
+.CourseRow{
 
-    width: 100px;
-
-}
-
-.CommentCol{
-
-    width: 200px;
+    height: 40px;
     
 }
 
-.SummaryRow{
+.ContentCol{
 
-    height: 35px;
+    width: 90px;
     
 }
 
-.CommentAction{
+.AttendNumber{
 
-    border: black solid 1px;
+    width: 110px;
+    
+}
+
+.SummaryLink{
+
+    text-decoration: none;
+    color: black;
     
 }

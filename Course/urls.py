@@ -28,4 +28,7 @@ urlpatterns = [
     path('summary/<int:Course_ID>', views.CommentSummary, name='CommentSummary'),
     path('summary/getComment', comment.getComment, name='getComment'),
     path('summary/getNewComments', comment.getNewComments, name='getNewComments'),
+
+    path('manage/course', views.CourseManage, name='CourseManage'),
+    path('manage/', views.Manage, name='Manage')
 ]

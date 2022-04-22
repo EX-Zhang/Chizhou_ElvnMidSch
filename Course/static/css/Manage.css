@@ -1,15 +1,15 @@
 
-#SummaryDiv{
+#CourseManageDiv{
 
     position: absolute;
     top:20%;
     margin-top:-50px;
     width: 100%;
     text-align: center;
-
+    
 }
 
-#SummaryTable{
+#CoursesTable{
 
     margin: auto;
     text-align: center;
@@ -19,32 +19,44 @@
     
 }
 
-.NameCol{
+.Name{
 
     width: 100px;
     
 }
 
-.AttendCol{
+.Info{
 
     width: 100px;
-
-}
-
-.CommentCol{
-
-    width: 200px;
     
 }
 
-.SummaryRow{
+.Teacher{
 
-    height: 35px;
+    width: 100px;
     
 }
 
-.CommentAction{
+.Place{
 
-    border: black solid 1px;
+    width: 100px;
+    
+}
+
+.Avail{
+
+    width: 150px;
+    
+}
+
+.Time{
+
+    width: 150px;
+    
+}
+
+.Number{
+
+    width: 100px;
     
 }

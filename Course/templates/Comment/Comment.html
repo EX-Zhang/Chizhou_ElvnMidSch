@@ -26,7 +26,7 @@
 
     <div id="CommentDiv">
 
-      <h2>{{Course.Date|safe}}{{Course.Name|safe}}学生评价表</h2>
+      <h3>{{Course.Date|safe}}{{Course.Name|safe}}学生评价表</h3>
 
       <br>
 
@@ -58,8 +58,9 @@
         
         {% endfor %}
         
-        </table>
+      </table>
 
+      <div><br><button type="button" class="btn btn-success" onclick="set_All_Attend({{StudentID|safe}},{{Course.ID|safe}})">开始点名</button></div>
       
     </div>
 

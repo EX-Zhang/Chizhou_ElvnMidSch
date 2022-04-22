@@ -1,7 +1,7 @@
 
 function init_Time_Info(Student_ID, Absent, Time) {
 
-    set_Time_Info(Student_ID, Absent == "1" && Time == "None" ? 1 : 0, Time);
+    set_Time_Info(Student_ID, Absent, Time);
 
 }
 
@@ -17,7 +17,18 @@ function set_Time_Info(Student_ID, Absent, Time) {
         return;
     }
 
-    if (Absent == 1) {
+    if (Time != "" && Time != "None" && Time != null) {
+
+        btn.text(Time.substring(0, 5) + "已到");
+
+        btn.attr('class', 'btn btn-success btn-xs');
+
+        btn.attr('disabled', 'disabled');
+
+        $("#" + Student_ID).find("#Name").removeAttr("onclick");
+
+    }
+    else if (Absent == 1) {
 
         btn.text("缺席");
 
@@ -30,9 +41,9 @@ function set_Time_Info(Student_ID, Absent, Time) {
         $("#" + Student_ID).find("#Name").removeAttr("onclick");
 
     }
-    else if (Time != "" && Time != "None") {
+    else if (Absent == 0) {
 
-        btn.text(Time.substring(0, 5) + "已到");
+        btn.text("正常");
 
         btn.attr('class', 'btn btn-success btn-xs');
 
@@ -50,7 +61,7 @@ function set_Absent(Course_ID, Student_ID) {
 
         if (result.response == "Valid") {
 
-            set_Time_Info(Student_ID, 1, "00:00");
+            set_Time_Info(Student_ID, 1, "");
 
         }
 
@@ -80,7 +91,7 @@ function set_Attend(Course_ID, Student_ID) {
 
         }
 
-        set_Time_Info(Student_ID, 0, Time);
+        set_Time_Info(Student_ID, 1, Time);
 
     });
 
@@ -181,5 +192,39 @@ function show_comment_modal(Student_ID, Student_Name, Comment) {
     $("#AttendInfoModalBody").text(Comment);
 
     $('#AttendInfoModal').modal('show');
+
+}
+
+function set_All_Attend(Students, Course_ID) {
+
+    var Student_ID = [];
+
+    for (var i in Students) {
+
+        var ID = Students[i];
+
+        var onclick = $("#" + ID).find("#Name").attr("onclick");
+
+        if (onclick != undefined && onclick != null && onclick.length > 0) {
+
+            Student_ID.push(ID);
+
+        }
+
+    }
+
+    $.post('/courses/comment/setTime', { Students: JSON.stringify(Student_ID), Course_ID: Course_ID, Date: new Date().toLocaleDateString() }, function (result) {
+
+        if (result.response == 'Valid') {
+
+            for (var i in result.Students) {
+
+                set_Time_Info(result.Students[i], 0, "");
+
+            }
+
+        }
+
+    });
 
 }

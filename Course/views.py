@@ -147,13 +147,15 @@ def CommentIndex(request, Course_ID):
 
         Students = []
 
+        StudentID = []
+
         applications = Application.objects.filter(course_id = Course_ID)
 
         for application in applications:
 
             Student = {
 
-                'Absent': "",
+                'Absent': None,
                 'Attend': "",
                 'Comment': "",
                 
@@ -164,6 +166,8 @@ def CommentIndex(request, Course_ID):
             Student['ID'] = student_id
 
             Student['Name'] = student_id
+
+            StudentID.append(student_id)
 
             Comments = Comment.objects.filter(course_id = Course_ID, student_id = student_id, course_date = Course_Date)
 
@@ -184,7 +188,10 @@ def CommentIndex(request, Course_ID):
                 'Date': Course_Date,
                 
             },
+            
             'Students': Students,
+
+            'StudentID': StudentID,
             
         }
 
@@ -200,3 +207,43 @@ def CommentSummary(request, Course_ID):
     courses = Course.objects.filter(course_id = Course_ID)
 
     return render(request, 'Comment/Summary.html', {'Course':{'ID': Course_ID, 'Name': courses[0].course_name}, 'Comments': dumps(getComments(Course_ID, "", date.today()))})
+
+def CourseManage(request):
+
+    cur_term = getCurrentTerm()
+
+    Courses = Course.objects.filter(available_date__gte = cur_term[0], available_date__lte = cur_term[1])
+
+    Courses_Info = []
+
+    for Current_Course in Courses:
+
+        Course_ID = Current_Course.course_id
+
+        Student_Num = len(Application.objects.filter(course_id = Course_ID))
+
+        Course_Info = {
+
+            'ID': Course_ID,
+            
+            'Name': Current_Course.course_name,
+
+            'Teacher': Current_Course.teacher_id,
+
+            'Place': Current_Course.course_place,
+
+            'StudentNum': Student_Num,
+
+            'AttendNum': getRecentAttendNum(Course_ID, Student_Num),
+            
+        }
+
+        Courses_Info.append(Course_Info)
+
+    Course_Term = date_to_str(cur_term[0]) + " - " + date_to_str(cur_term[1])
+
+    return render(request, 'Manage/Course.html', {'Course_Term': Course_Term, 'Courses': Courses_Info})
+
+def Manage(request):
+
+    return render(request, 'Manage/Manage.html', {})
