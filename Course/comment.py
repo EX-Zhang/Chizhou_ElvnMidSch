@@ -280,7 +280,7 @@ def getNewComments(request):
 
             if len(Comments['Dates']) == 1:
 
-                return JsonResponse({'response': 'Valid', 'comments': Comments})
+                return JsonResponse({'response': 'Valid', 'comments': Comments, 'id': ID,})
 
     return JsonResponse({'response': 'inValid'})
 

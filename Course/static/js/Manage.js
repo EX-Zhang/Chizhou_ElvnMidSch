@@ -47,24 +47,18 @@ function read_Excel_Table(Courses) {
 
     var table = $("#CoursesTable");
 
-    var class_name = ['Name', 'Info', 'Teacher', 'Place', 'Avail', 'Time', 'Number'];
-
     for (var i = 0; i < n; i++) {
 
-        table.append("<tr id='" + i + "' class='CoursesRow'></tr>");
-
-        var Course = Courses[i];
-
-        var index = 0;
-
-        var row = $("#" + i);
-
-        for (var j in Course) {
-
-            row.append("<td class='" + class_name[index] + "'>" + Course[j] + "</td>");
-
-        }
+        set_Table_Row(i, Courses[i]);
 
     }
+
+}
+
+function set_Table_Row(id, Course) {
+
+    table.append("<tr id='" + i + "' class='CoursesRow'></tr>");
+
+    var row = $.("#" + id);
 
 }

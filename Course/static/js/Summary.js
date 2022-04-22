@@ -27,11 +27,11 @@ function set_Summary_table(Comments, Course_ID) {
 
         var prev_html = "set_New_Comments(" + Course_ID + ",'Prev')";
 
-        $("#Prev_btn").attr("onclick", "'" + prev_html + "'");
+        $("#Prev_btn").attr("onclick", prev_html);
 
         var next_html = "set_New_Comments(" + Course_ID + ",'Next')";
 
-        $("#Next_btn").attr("onclick", "'" + next_html + "'");
+        $("#Next_btn").attr("onclick", next_html);
 
     }
 
@@ -98,17 +98,23 @@ function add_to_head(Dates, Students, Course_ID) {
 
     var ContentHeader = $("#Head");
 
+    $(".NameCol").remove();
+
     for (var i = 0; i < n; i++) {
 
         var date = Dates[i];
 
         DateHeader.prepend("<th colspan='2' class='" + date + "'><B>" + date + "</B></th>");
 
-        ContentHeader.prepend("<th class='Attend " + date + "'>考勤</th>");
+        ContentHeader.prepend("<th class='CommentCol " + date + "'>评价</th>");
 
-        ContentHeader.prepend("<th class='Comment " + date + "'>评价</th>");
+        ContentHeader.prepend("<th class='AttendCol " + date + "'>考勤</th>");
 
     }
+
+    DateHeader.prepend("<th class='NameCol'></th>");
+
+    ContentHeader.prepend('<th class="NameCol">姓名</th>');
 
     for (var j in Students) {
 
@@ -118,13 +124,9 @@ function add_to_head(Dates, Students, Course_ID) {
 
         for (var i = 0; i < n; i++) {
 
-            var date = Dates[i];
-
-            row.prepend("<td id='Attend' class='Attend " + date + "'>" + Student.Comments[i].Attend + "</td>");
-
             var Comment = Student.Comments[i].Comment;
 
-            row.prepend("<td id='Comment' class='Comment " + date + "'>" + Comment + "</td>");
+            row.prepend("<td id='Comment' class='CommentCol " + date + "'>" + Comment + "</td>");
 
             if (Comment.length > 15) {
 
@@ -133,6 +135,12 @@ function add_to_head(Dates, Students, Course_ID) {
                 row.find("#Comment").find("." + date).attr("onclick", "'" + btn_HTML + "'");
 
             }
+
+            var date = Dates[i];
+
+            row.prepend("<td id='Attend' class='AttendCol " + date + "'>" + Student.Comments[i].Attend + "</td>");
+
+            row.prepend("<td class='NameCol'>" + Student.Name + "</td>");
 
         }
 
@@ -189,6 +197,8 @@ function set_New_Comments(ID, Direct) {
         if (result.response != "Valid") {
             return;
         }
+
+        var Course_ID = result.id;
 
         var Comments = result.comments;
 
