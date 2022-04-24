@@ -33,7 +33,7 @@
       <div id="ExcelInputDiv">
 
         <input type="file" id="ExcelFile" name="ExcelFile" style="float:left;" accept=".xls,.xlsx" onchange="ReadExcelFile()">
-        <button type="button" style="float:right;" onclick="">确定</button>
+        <button type="button" style="float:right;" onclick="upload_Courses()">确定上传</button>
 
       </div>
 
@@ -57,22 +57,22 @@
       
     </div>
 
-    <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="CommentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="InfoModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="CommentModalLabel">
+				<h4 class="modal-title" id="InfoModalLabel">
 				</h4>
-                                <button type="button" class="btn btn-default btn-lg" onclick="$('#CommentModal').modal('hide')">
+                                <button type="button" class="btn btn-default btn-lg" onclick="$('#InfoModal').modal('hide')">
 					&times;
 				</button>
 			</div>
-			<div id="CommentModalBody" class="modal-body" style="text-align:center;">
+			<div id="InfoModalBody" class="modal-body" style="text-align:center;">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" onclick="$('#CommentModal').modal('hide')">关闭
+				<button type="button" class="btn btn-primary" onclick="$('#InfoModal').modal('hide')">关闭
 				</button>
-                                <button type="button" id="SubmitComment" class="btn btn-primary">提交更改
+                                <button type="button" id="SubmitInfo" class="btn btn-primary">提交更改
 				</button>
 			</div>
 		</div>

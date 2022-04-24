@@ -231,8 +231,6 @@ def getComments(Course_ID, Direct, date):
 
         Students.append(Student)
 
-        print(type(Students))
-
     return {'Dates': Dates, 'Students': Students}
     
 

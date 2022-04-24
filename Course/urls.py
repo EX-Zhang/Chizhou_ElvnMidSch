@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 
-from . import views, comment
+from . import views, comment, manage
 
 urlpatterns = [
     path('selection/', views.SelectionIndex, name='SelectionIndex'),
@@ -30,5 +30,6 @@ urlpatterns = [
     path('summary/getNewComments', comment.getNewComments, name='getNewComments'),
 
     path('manage/course', views.CourseManage, name='CourseManage'),
-    path('manage/', views.Manage, name='Manage')
+    path('manage/', views.Manage, name='Manage'),
+    path('manage/upload', manage.CoursesUpload, name="CoursesUpload"), 
 ]

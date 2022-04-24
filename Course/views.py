@@ -247,3 +247,37 @@ def CourseManage(request):
 def Manage(request):
 
     return render(request, 'Manage/Manage.html', {})
+
+@csrf_exempt
+def CourseUpload(request):
+
+    if request.method == "POST":
+
+        post = request.POST
+
+        if post:
+
+            Name = post.get('Name')
+
+            Info = post.get('Info')
+
+            Teacher = post.get('Teacher')
+
+            Place = post.get('Place')
+
+            Avail = post.get('Avail')
+
+            Time = post.get('Time')
+
+            Number = post.get('Number')
+
+            Courses = Course.objects.filter(course_name = Name, course_info = Info, teacher_id = Teacher, course_place = place, course_time = Time, available_date = date, total_num = Number)
+            if len(Courses > 0):
+
+                return JsonResponse({'response':'exist'}) 
+
+            Course.objects.create(course_name = Name, course_info = Info, teacher_id = Teacher, course_place = place, course_time = Time, available_date = date, total_num = Number)
+
+            return JsonResponse({'response','success'})
+
+    return JsonResponse({'response','error'})
