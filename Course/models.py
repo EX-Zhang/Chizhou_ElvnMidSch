@@ -39,7 +39,7 @@ class Course(models.Model):
     course_info = models.TextField(db_column='Course_Info', blank=True, null=True)  # Field name made lowercase.
     teacher_id = models.CharField(db_column='Teacher_ID', max_length=255, blank=True, null=True)  # Field name made lowercase.
     course_place = models.CharField(db_column='Course_Place', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    course_time = models.DateTimeField(db_column='Course_Time', blank=True, null=True)  # Field name made lowercase.
+    course_time = models.CharField(db_column='Course_Time', max_length=255, blank=True, null=True)  # Field name made lowercase.
     available_date = models.DateField(db_column='Available_Date', blank=True, null=True)  # Field name made lowercase.
     total_num = models.IntegerField(db_column='Total_Num', blank=True, null=True)  # Field name made lowercase.
 

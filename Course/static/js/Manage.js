@@ -266,11 +266,47 @@ function upload_Courses() {
 
         var Course = { ID: ID, Info: $("#" + ID + "info_btn").val() };
 
-        for (var i in Keys) {
+        for (var j in Keys) {
 
-            var key = Keys[i];
+            var key = Keys[j];
 
             Course[key] = $("#" + ID).find("." + key).text();
+
+        }
+
+        for (var k in Course) {
+
+            var text = Course[k];
+
+            if (text == "" || text == undefined || text == null) {
+
+                alert("存在没有填写的内容");
+
+                return;
+
+            }
+
+            var valid = false;
+
+            for (var c in text) {
+
+                if (text[c] != ' ') {
+
+                    valid = true;
+
+                    break;
+
+                }
+
+            }
+
+            if (!valid) {
+
+                alert("存在没有填写的内容");
+
+                return;
+
+            }
 
         }
 
@@ -278,10 +314,32 @@ function upload_Courses() {
 
     }
 
-    console.log(Courses_Uploaded.toString());
+    $.post("/courses/manage/upload", { length: n, Courses: Courses_Uploaded }, function (result) {
 
-    $.post("/courses/manage/upload", {}, function (result) {
+        var response = result.response;
 
+        if (response == 'success' || response == 'partsuccess') {
+
+            var Courses_ID = result.uploaded;
+
+            for (var i in Courses_ID) {
+
+                $("#" + Courses_ID[i]).remove();
+
+            }
+
+            if (response == 'partsuccess') {
+
+                alert("部分上传成功");
+
+            }
+
+        }
+        else {
+
+            alert("未知错误发生");
+
+        }
 
     });
 

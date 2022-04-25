@@ -27,8 +27,6 @@ def get_courses(Student_ID):
 
                 cur['Valid'] = 2
 
-    print(Course_Dict)
-
     return Course_Dict
 
 
